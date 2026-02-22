@@ -104,7 +104,7 @@ Sécurité : Flask-Limiter, Werkzeug (Security)
 
 Base de données : Repository Pattern (In-Memory pour dev / Extensible SQL)
 
-Frontend Associé : AuthModuleFront (Angular)
+Frontend Associé : [AuthModuleFront (Angular)](https://github.com/ludo35300/AuthModuleFront)
 
 ## 🚧 Roadmap & Améliorations Futures
  Migration vers PostgreSQL (SQLAlchemy).
