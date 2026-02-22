@@ -31,3 +31,89 @@
 ```bash
 git clone https://github.com/ludo35300/AuthModuleBack.git
 cd AuthModuleBack
+```
+
+### 2. Environnement Virtuel
+``` bash
+# Linux / Mac
+python3 -m venv venv
+source venv/bin/activate
+
+# Windows
+python -m venv venv
+venv\Scripts\activate
+```
+
+### 3. Installation des dépendances
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Lancer le serveur (Mode Développement)
+```bash
+flask run
+```
+
+L'API sera accessible sur : http://localhost:5000
+
+## ⚙️ Configuration (.env)
+À la racine du projet, créez un fichier .env pour surcharger la configuration
+
+```bash
+# .env example
+
+# Sécurité (Générer avec secrets.token_hex(32))
+SECRET_KEY=votre_super_secret_key_flask
+JWT_SECRET_KEY=votre_super_jwt_secret_key
+
+# Base de données (Dev = SQLite/Memory, Prod = Postgres)
+DATABASE_URL=postgresql://user:password@localhost/authdb
+
+# Rate Limiting (Dev = Memory, Prod = Redis)
+RATELIMIT_STORAGE_URI=redis://localhost:6379
+
+# CORS (Frontend URL)
+CORS_ORIGINS=http://localhost:4200
+```
+
+## 📡 Documentation API
+
+Authentification
+
+| Méthode | Endpoint                  | Auth Requise  | Description                              |
+| ------- | ------------------------- | ------------- | ---------------------------------------- |
+| POST    | /api/auth/register        | ❌             | Créer un nouveau compte                  |
+| POST    | /api/auth/login           | ❌             | Connexion (Set Cookies Access & Refresh) |
+| POST    | /api/auth/logout          | ✅             | Déconnexion (Supprime les cookies)       |
+| POST    | /api/auth/refresh         | ✅ (Refresh)   | Obtenir un nouveau Access Token          |
+| POST    | /api/auth/forgot-password | ❌             | Demander un lien de réinitialisation     |
+| POST    | /api/auth/reset-password  | ❌ (Token URL) | Définir un nouveau mot de passe          |
+
+Utilisateur
+
+| Méthode | Endpoint | Auth Requise | Description                            |
+| ------- | -------- | ------------ | -------------------------------------- |
+| GET     | /api/me  | ✅ (Access)   | Récupérer les infos du profil connecté |
+
+## 🛠️ Stack Technique
+Framework : Flask
+
+Auth : Flask-JWT-Extended
+
+Sécurité : Flask-Limiter, Werkzeug (Security)
+
+Base de données : Repository Pattern (In-Memory pour dev / Extensible SQL)
+
+Frontend Associé : AuthModuleFront (Angular)
+
+## 🚧 Roadmap & Améliorations Futures
+ Migration vers PostgreSQL (SQLAlchemy).
+
+ Ajout de Tests Unitaires (Pytest).
+
+ Containerisation Docker & Docker Compose (App + Redis + DB).
+
+ Validation des entrées avec Marshmallow.
+
+
+Ce projet est une démonstration technique d'un module d'authentification sécurisé.
