@@ -1,102 +1,33 @@
-# AuthModule Back
+# 🔐 AuthModule Backend
 
-**Authentification réutilisable** pour Angular SPA. JWT cookies sécurisés + CSRF + Rate Limiting.
+> API d'authentification robuste et réutilisable construite avec **Flask**.
+> Implémente le pattern **JWT (Access + Refresh Tokens)** stockés dans des **Cookies HttpOnly** sécurisés avec protection **CSRF** et **Rate Limiting**.
 
-[![Python 3.13](https://img.shields.io/badge/python-3.13-green.svg)](https://www.python.org/)
-[![Flask](https://img.shields.io/badge/flask-3.x-blue.svg)](https://flask.palletsprojects.com/)
-[![License MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.13+-blue.svg?style=flat&logo=python&logoColor=white)](https://www.python.org/)
+[![Flask](https://img.shields.io/badge/Flask-3.x-green.svg?style=flat&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
+[![License](https://img.shields.io/badge/license-MIT-purple.svg)](LICENSE)
+[![Status](https://img.shields.io/badge/Status-Development-orange.svg)]()
 
-## 🚀 Quick Start
+---
 
+## ✨ Fonctionnalités Clés
+
+- **Sécurité Maximale** :
+  - **JWT dans Cookies HttpOnly** (pas de LocalStorage, protection XSS).
+  - **Protection CSRF** via Double Submit Cookie.
+  - **Double Token** : Access Token (court) + Refresh Token (long).
+- **Rate Limiting** : Protection contre le Brute-Force via `Flask-Limiter`.
+- **Gestion des Utilisateurs** : Inscription, Connexion, Profil (`/me`).
+- **Flow Mot de Passe** : Hachage sécurisé (Argon2/Bcrypt) et workflow de réinitialisation (Forgot/Reset Password).
+- **Architecture Modulaire** : Utilisation de Flask Blueprints.
+
+## 🚀 Installation & Démarrage
+
+### Prérequis
+- Python 3.13+
+- Git
+
+### 1. Cloner le projet
 ```bash
 git clone https://github.com/ludo35300/AuthModuleBack.git
 cd AuthModuleBack
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-flask run
-
-Frontend : http://localhost:4200
-API : http://localhost:5000/api/
-
-🔑 Endpoints API
-
-| Méthode | Endpoint                  | Auth    | Description                 |
-| ------- | ------------------------- | ------- | --------------------------- |
-| POST    | /api/auth/login           | -       | Login (email/password)      |
-| POST    | /api/auth/register        | -       | Inscription utilisateur     |
-| POST    | /api/auth/refresh         | Refresh | Nouveau access token        |
-| POST    | /api/auth/logout          | Access  | Déconnexion (unset cookies) |
-| GET     | /api/me                   | Access  | Profil utilisateur          |
-| POST    | /api/auth/forgot-password | -       | Demande reset password      |
-| POST    | /api/auth/reset-password  | Token   | Reset mot de passe          |
-
-Exemple login :
-
-```bash
-curl -X POST http://localhost:5000/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"test@example.com","password":"password123"}'
-
-📦 Installation
-
-```bash
-pip install flask flask-jwt-extended flask-cors flask-limiter werkzeug bcrypt python-dotenv
-
-🔒 Configuration Production
-Créez .env :
-
-```text
-JWT_SECRET_KEY=sk-64_hex_chars_here_$(python -c "import secrets; print(secrets.token_hex(32))")
-SECRET_KEY=flask_app_secret_32_bytes_here
-DATABASE_URL=postgresql://user:pass@localhost/authdb
-REDIS_URL=redis://localhost:6379
-CORS_ORIGINS=https://monapp.com,https://www.monapp.com
-
-Sécurité activée :
-
-JWT_COOKIE_SECURE=True (HTTPS only)
-
-Redis RateLimit/JWT blocklist
-
-PostgreSQL persistant
-
-🐳 Docker (à implémenter)
-
-```text
-# docker-compose.yml
-services:
-  app:
-    build: .
-    ports: ["5000:5000"]
-    env_file: .env
-    depends_on: [postgres, redis]
-  postgres:
-    image: postgres:16
-    environment:
-      POSTGRES_DB: authdb
-      POSTGRES_USER: auth
-      POSTGRES_PASSWORD: secret
-  redis:
-    image: redis:7-alpine
-
-📊 Status Développement
-
-| Feature             | Statut             |
-| ------------------- | ------------------ |
-| JWT Cookies + CSRF  | ✅                  |
-| Rate Limiting       | ✅ (memory → Redis) |
-| Password Reset      | ✅                  |
-| User Register/Login | ✅                  |
-| Refresh Tokens      | ✅                  |
-| PostgreSQL          | 🔄 WIP             |
-| Tests pytest        | 🔄 WIP             |
-| Docker              | 🔄 WIP             |
-
-🤝 Contributing
-
-```bash
-# Dev setup
-pip install -r requirements.txt -r requirements-dev.txt
-pytest
-pre-commit install  # linting auto
